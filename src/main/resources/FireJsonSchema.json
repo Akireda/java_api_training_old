@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "definitions": {},
+    "type": "object",
+    "properties": {
+        "consequence": {
+            "type": "string",
+            "enum": ["miss", "hit", "sunk"]
+        },
+        "shipLeft": {
+            "type": "boolean"
+        }
+    },
+    "required": ["consequence", "shipLeft"]
+}
