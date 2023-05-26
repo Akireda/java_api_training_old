@@ -47,18 +47,28 @@ public class StartHttpHandler implements HttpHandler {
             JSONObject jsonData = new JSONObject(requestJson.toString());
 
             if (!checkJson(jsonData)) {
-                exchange.sendResponseHeaders(400, "BAD REQUEST".length());
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write("BAD REQUEST".getBytes());
-                }
+                sendBadRequestResponse(exchange);
             } else {
-                String responseJson = "{\"id\":\"1\", \"url\":\"http://localhost:" + exchange.getLocalAddress().getPort() + "\", \"message\":\"Good luck!\"}";
-                exchange.sendResponseHeaders(202, responseJson.length());
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(responseJson.getBytes());
-                }
-                System.out.println("Client connected");
+                sendSuccessResponse(exchange);
             }
         }
     }
+
+    private void sendBadRequestResponse(HttpExchange exchange) throws IOException {
+        String response = "BAD REQUEST";
+        exchange.sendResponseHeaders(400, response.length());
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes());
+        }
+    }
+
+    private void sendSuccessResponse(HttpExchange exchange) throws IOException {
+        String response = "{\"id\":\"1\", \"url\":\"http://localhost:" + exchange.getLocalAddress().getPort() + "\", \"message\":\"Good luck!\"}";
+        exchange.sendResponseHeaders(202, response.length());
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes());
+        }
+        System.out.println("Client connected");
+    }
+
 }
